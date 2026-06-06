@@ -109,4 +109,13 @@ services:
     - DB_USER=user
     - DB_PASSWORD=password
     - DB_NAME=products_db
+  restart: unless-stopped
+  depends_on:
+  mongo:
+    condition: service_healthy
+  kafka:
+    condition: service_started
+  depends_on:
+  postgres:
+    condition: service_healthy
     
