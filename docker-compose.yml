@@ -83,14 +83,16 @@ services:
         condition: service_healthy
 
   read-service:
-    build:
-      context: ./read-service
-    container_name: read-service
-    ports:
-      - "8081:8081"
-    depends_on:
-      mongo:
-        condition: service_healthy
-      kafka:
-        condition: service_started
-        
+  build: ./read-service
+  ports:
+    - "8081:8081"
+  depends_on:
+    - kafka
+    - mongo
+  environment:
+    - PORT=8081
+    - MONGO_URL=mongodb://mongo:27017
+    - MONGO_DB=products_read_db
+    - KAFKA_BROKER=kafka:29092
+    - KAFKA_TOPIC=pg-server.public.products
+    - GROUP_ID=product-sync-group
