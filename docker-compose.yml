@@ -96,3 +96,17 @@ services:
     - KAFKA_BROKER=kafka:29092
     - KAFKA_TOPIC=pg-server.public.products
     - GROUP_ID=product-sync-group
+  write-service:
+  build: ./write-service
+  ports:
+    - "8080:8080"
+  depends_on:
+    - postgres
+  environment:
+    - PORT=8080
+    - DB_HOST=postgres
+    - DB_PORT=5432
+    - DB_USER=user
+    - DB_PASSWORD=password
+    - DB_NAME=products_db
+    
